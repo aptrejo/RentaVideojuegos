@@ -1,0 +1,57 @@
+class Producto {
+    protected String nombre;
+    protected double costoRenta;
+    protected int dias;
+    protected boolean rentado;
+
+    public Producto(String nombre, double costoRenta, int dias, boolean rentado) {
+        this.nombre = nombre;
+        this.costoRenta = costoRenta;
+        this.dias = dias;
+        this.rentado = rentado;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public boolean isRentado() {
+        return rentado;
+    }
+}
+
+class Pelicula extends Producto {
+    private String genero;
+    private int año;
+
+    public Pelicula(String nombre, double costoRenta, int dias, boolean rentado, String genero, int año) {
+        super(nombre, costoRenta, dias, rentado);
+        this.genero = genero;
+        this.año = año;
+    }
+
+    @Override
+    public String toString() {
+        return "Pelicula: " + nombre + ", Género: " + genero + ", Año: " + año + ", Rentado: " + (rentado ? "Sí" : "No");
+    }
+}
+
+class Videojuego extends Producto {
+    private String estilo;
+    private String plataforma;
+
+    public Videojuego(String nombre, double costoRenta, int dias, boolean rentado, String estilo, String plataforma) {
+        super(nombre, costoRenta, dias, rentado);
+        this.estilo = estilo;
+        this.plataforma = plataforma;
+    }
+
+    public String getPlataforma() {
+        return plataforma;
+    }
+
+    @Override
+    public String toString() {
+        return "Videojuego: " + nombre + ", Estilo: " + estilo + ", Plataforma: " + plataforma + ", Rentado: " + (rentado ? "Sí" : "No");
+    }
+}
