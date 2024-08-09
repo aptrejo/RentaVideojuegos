@@ -1,0 +1,132 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class GestionRentas {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Pelicula> peliculas = new ArrayList<>();
+        List<Videojuego> videojuegos = new ArrayList<>();
+
+        System.out.print("¿Cuántas películas quieres registrar? ");
+        int numPeliculas = scanner.nextInt();
+        scanner.nextLine(); // Limpiar buffer
+
+        for (int i = 0; i < numPeliculas; i++) {
+            System.out.println("Introduce los datos de la película " + (i + 1) + ":");
+            System.out.print("Nombre: ");
+            String nombre = scanner.nextLine();
+            System.out.print("Costo de renta: ");
+            double costoRenta = scanner.nextDouble();
+            System.out.print("Días de renta: ");
+            int dias = scanner.nextInt();
+            System.out.print("Género: ");
+            scanner.nextLine(); // Limpiar buffer
+            String genero = scanner.nextLine();
+            System.out.print("Año: ");
+            int año = scanner.nextInt();
+            System.out.print("¿Está rentada? (1: Sí, 0: No): ");
+            boolean rentado = scanner.nextInt() == 1;
+            scanner.nextLine(); // Limpiar buffer
+            peliculas.add(new Pelicula(nombre, costoRenta, dias, rentado, genero, año));
+        }
+
+        System.out.print("¿Cuántos videojuegos quieres registrar? ");
+        int numVideojuegos = scanner.nextInt();
+        scanner.nextLine(); // Limpiar buffer
+
+        for (int i = 0; i < numVideojuegos; i++) {
+            System.out.println("Introduce los datos del videojuego " + (i + 1) + ":");
+            System.out.print("Nombre: ");
+            String nombre = scanner.nextLine();
+            System.out.print("Costo de renta: ");
+            double costoRenta = scanner.nextDouble();
+            System.out.print("Días de renta: ");
+            int dias = scanner.nextInt();
+            System.out.print("Estilo: ");
+            scanner.nextLine(); // Limpiar buffer
+            String estilo = scanner.nextLine();
+            System.out.print("Plataforma: ");
+            String plataforma = scanner.nextLine();
+            System.out.print("¿Está rentado? (1: Sí, 0: No): ");
+            boolean rentado = scanner.nextInt() == 1;
+            scanner.nextLine(); // Limpiar buffer
+            videojuegos.add(new Videojuego(nombre, costoRenta, dias, rentado, estilo, plataforma));
+        }
+
+        char opcion;
+        do {
+            System.out.println("\n¿Qué acción deseas realizar?");
+            System.out.println("T/t: Despliega todos los productos.");
+            System.out.println("P/p: Despliega todas las películas.");
+            System.out.println("V/v: Despliega todos los videojuegos.");
+            System.out.println("S/s: Checar si una película está rentada.");
+            System.out.println("J/j: Verifica si un videojuego está o no rentado.");
+            System.out.println("C/c: Devuelve la cantidad de películas que están rentadas.");
+            System.out.println("X/x: Indica la cantidad de videojuegos cuya plataforma es Xbox One.");
+            System.out.println("U/u: Termina el programa.");
+            System.out.print("Elige una opción: ");
+            opcion = scanner.nextLine().charAt(0);
+
+            switch (opcion) {
+                case 'T':
+                case 't':
+                    System.out.println("\nTodos los productos:");
+                    peliculas.forEach(System.out::println);
+                    videojuegos.forEach(System.out::println);
+                    break;
+                case 'P':
+                case 'p':
+                    System.out.println("\nPelículas:");
+                    peliculas.forEach(System.out::println);
+                    break;
+                case 'V':
+                case 'v':
+                    System.out.println("\nVideojuegos:");
+                    videojuegos.forEach(System.out::println);
+                    break;
+                case 'S':
+                case 's':
+                    System.out.print("Introduce el nombre de la película: ");
+                    String nombrePelicula = scanner.nextLine();
+                    Pelicula pelicula = peliculas.stream().filter(p -> p.getNombre().equalsIgnoreCase(nombrePelicula)).findFirst().orElse(null);
+                    if (pelicula != null) {
+                        System.out.println("La película " + (pelicula.isRentado() ? "está rentada." : "no está rentada."));
+                    } else {
+                        System.out.println("Película no encontrada.");
+                    }
+                    break;
+                case 'J':
+                case 'j':
+                    System.out.print("Introduce el nombre del videojuego: ");
+                    String nombreVideojuego = scanner.nextLine();
+                    Videojuego videojuego = videojuegos.stream().filter(v -> v.getNombre().equalsIgnoreCase(nombreVideojuego)).findFirst().orElse(null);
+                    if (videojuego != null) {
+                        System.out.println("El videojuego " + (videojuego.isRentado() ? "está rentado." : "no está rentado."));
+                    } else {
+                        System.out.println("Videojuego no encontrado.");
+                    }
+                    break;
+                case 'C':
+                case 'c':
+                    long peliculasRentadas = peliculas.stream().filter(Pelicula::isRentado).count();
+                    System.out.println("Cantidad de películas rentadas: " + peliculasRentadas);
+                    break;
+                case 'X':
+                case 'x':
+                    long videojuegosXbox = videojuegos.stream().filter(v -> v.getPlataforma().equalsIgnoreCase("Xbox One")).count();
+                    System.out.println("Cantidad de videojuegos para Xbox One: " + videojuegosXbox);
+                    break;
+                case 'U':
+                case 'u':
+                    System.out.println("Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+                    break;
+            }
+        } while (opcion != 'U' && opcion != 'u');
+
+        scanner.close();
+    }
+}
